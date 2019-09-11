@@ -75,5 +75,8 @@ pub enum Action {
 		target: PathBuf,
 	},
 	#[structopt(about = "Upgrade AUR packages")]
-	Upgrade {},
+	Upgrade {
+		#[structopt(long, about = "Upgrade development packages")]
+		devel: bool,
+	},
 }
