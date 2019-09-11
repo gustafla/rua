@@ -12,10 +12,11 @@ use prettytable::format::*;
 use prettytable::*;
 use std::collections::HashSet;
 
+fn pkg_is_devel(name: &str) -> bool {
+    name.ends_with("-git")
+}
+
 pub fn upgrade(dirs: &ProjectDirs, devel: bool) {
-	if devel {
-		unimplemented!("--devel support to be added");
-	}
 	let alpm = pacman::create_alpm();
 	let pkg_cache = alpm
 		.localdb()
@@ -46,7 +47,7 @@ pub fn upgrade(dirs: &ProjectDirs, devel: bool) {
 	for (pkg, local_ver) in aur_pkgs {
 		let raur_ver = info_map.get(pkg).map(|p| p.version.to_string());
 		if let Some(raur_ver) = raur_ver {
-			if local_ver < Version::new(&raur_ver) {
+			if local_ver < Version::new(&raur_ver) || (devel && pkg_is_devel(pkg)) {
 				outdated.push((pkg, local_ver.to_string(), raur_ver));
 			} else {
 				up_to_date.push(pkg);
