@@ -13,7 +13,7 @@ use prettytable::*;
 use std::collections::HashSet;
 
 fn pkg_is_devel(name: &str) -> bool {
-    name.ends_with("-git")
+	name.ends_with("-git")
 }
 
 pub fn upgrade(dirs: &ProjectDirs, devel: bool) {
